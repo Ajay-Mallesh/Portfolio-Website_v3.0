@@ -71,7 +71,7 @@ const Home = () => {
     title: "Full Stack Developer",
     description: "Passionate software developer with expertise in building modern web applications. I love turning complex problems into elegant, user-friendly solutions.",
     profileInitials: "AM",
-    status: "Open to work 🚀 test",
+    status: "Open to work 🚀",
     resumeLink: "https://drive.google.com/file/d/YOUR_RESUME_ID/view",
   });
 
