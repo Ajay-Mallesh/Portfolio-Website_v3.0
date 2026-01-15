@@ -56,16 +56,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .eq('email', email);
 
       if (queryError || !adminUsers || adminUsers.length === 0) {
+        console.error('Admin user not found:', email);
         setLoading(false);
         return { error: 'Invalid email or password' };
       }
 
       const adminUser = adminUsers[0] as AdminUser;
+      console.log('Admin user found:', adminUser.email);
+      console.log('Attempting password verification...');
 
       // Verify password using bcrypt comparison
-      const passwordMatch = await bcrypt.compare(password, adminUser.password_hash);
+      let passwordMatch = false;
+      try {
+        passwordMatch = await bcrypt.compare(password, adminUser.password_hash);
+        console.log('Password match result:', passwordMatch);
+      } catch (bcryptError) {
+        console.error('Bcrypt comparison error:', bcryptError);
+        setLoading(false);
+        return { error: 'Invalid email or password' };
+      }
 
       if (!passwordMatch) {
+        console.error('Password does not match');
         setLoading(false);
         return { error: 'Invalid email or password' };
       }
