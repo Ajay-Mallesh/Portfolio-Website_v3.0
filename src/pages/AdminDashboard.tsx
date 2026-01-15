@@ -1,17 +1,35 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
 
 const AdminDashboard: React.FC = () => {
-  const { role } = useAuth();
+  const { role, logout } = useAuth();
+  const navigate = useNavigate();
 
   if (role !== "admin") {
     return <div className="p-8">Access denied. Admins only.</div>;
   }
 
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <Button
+          onClick={handleLogout}
+          variant="destructive"
+          className="flex items-center gap-2"
+        >
+          <LogOut size={18} />
+          Logout
+        </Button>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Link to="/admin/projects" className="dashboard-tile">Projects</Link>
         <Link to="/admin/experience" className="dashboard-tile">Experience</Link>
